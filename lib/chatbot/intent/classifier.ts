@@ -5,13 +5,28 @@
 
 import { ClassificationResult, DialogState, IntentType } from "./types";
 import { INTENT_DEFINITIONS } from "./intents";
-import { normalizeText, hasNegation } from "./normalizer";
+import { normalizeText, hasNegation, isCancellationPhrase } from "./normalizer";
 import { extractAllEntities } from "./entityExtractor";
 
 interface ScoredIntent {
   intent: IntentType;
   score: number;
   matchedPattern?: string;
+}
+
+/**
+ * True when the user is explicitly declining / disclaiming interest in a topic
+ * ("I don't want...", "no need...", "not interested..."). Informational
+ * intents must not fire for these.
+ */
+function isNegatedRequest(normalized: string): boolean {
+  return (
+    /\b(?:do\s+not|dont|don't|does\s+not|doesnt|will\s+not|wont|won't|cannot|never|no|not)\s+(?:want|need|wish|require)\b/.test(
+      normalized
+    ) ||
+    /\bnot\s+(?:interested|needed|required)\b/.test(normalized) ||
+    /\b(?:no|not)\s+(?:more|thanks|thank\s+you)\b/.test(normalized)
+  );
 }
 
 /**
@@ -65,9 +80,11 @@ export function classifyIntent(
     }
   }
 
+  const negatedRequest = isNegatedRequest(normalized);
+
   // 3. Check Centre Information queries
-  const isCentreQuery = /\b(about\s+(?:the\s+)?centre|about\s+asha\s+jyothi|tell\s+me\s+about\s+(?:the\s+)?centre|tell\s+me\s+about\s+asha\s+jyothi|what\s+is\s+(?:this\s+)?diagnostic\s+centre|who\s+are\s+you|what\s+is\s+asha\s+jyothi)\b/i.test(normalized);
-  if (isCentreQuery) {
+  const isCentreQuery = /\b(about\s+(?:the\s+)?centre|about\s+asha\s+jyothi|tell\s+me\s+about\s+(?:the\s+)?centre|tell\s+me\s+about\s+asha\s+jyothi|what\s+is\s+(?:this\s+)?diagnostic\s+centre|who\s+are\s+you|what\s+is\s+asha\s+jyothi|what\s+kind\s+of\s+centre\s+is\s+this|about\s+(?:the\s+|your\s+)?diagnostic\s+centre|tell\s+me\s+about\s+(?:the\s+|your\s+)?diagnostic\s+centre|give\s+me\s+information\s+about\s+the\s+centre)\b/i.test(normalized);
+  if (isCentreQuery && !negatedRequest) {
     return {
       intent: "CENTRE_INFO",
       confidence: 0.95,
@@ -76,35 +93,47 @@ export function classifyIntent(
   }
 
   // 4. Check for specific context rules (Price vs Prep vs Booking vs Info vs Availability)
-  const isPrepQuery = /\b(fast|fasting|empty\s+stomach|water\s+before|prepare|preparation)\b/i.test(normalized) ||
+  const isPrepQuery = /\b(fast|fasting|empty\s+stomach|water\s+before|prepare|preparation|breakfast|drink\s+water)\b/i.test(normalized) ||
     (/\b(eat|food)\b/i.test(normalized) && /\b(before|fast|test)\b/i.test(normalized));
-  const isPriceQuery = /\b(price|cost|how\s+much|charge|rate|charges|fee|fees)\b/i.test(normalized);
+  const isPriceQuery = /\b(price|prices|cost|how\s+much|charge|rate|charges|fee|fees)\b/i.test(normalized);
   const isBookingQuery =
-    /\b(book|booking|appointment|schedule|reserve|slot)\b/i.test(normalized) ||
+    /\b(book|booking|appointment|schedule|reserve|slot|get\s+tested)\b/i.test(normalized) ||
     (Boolean(entities.name) && Boolean(entities.test)) ||
-    /\b(i\s+want\s+(?:to\s+get\s+)?(?:cbc|blood\s+sugar|thyroid|lipid|vitamin|lft|kft|test))\b/i.test(normalized);
+    /\b(i\s+want\s+(?:to\s+get\s+)?(?:cbc|blood\s+sugar|thyroid|lipid|vitamin|lft|kft|test))\b/i.test(normalized) ||
+    /\b(need\s+(?:a\s+)?blood\s+test|need\s+an?\s+appointment|want\s+an?\s+appointment)\b/i.test(normalized);
 
-  const isHomeCollectionQuery = /\b(home\s+sample|home\s+collection|doorstep|sample\s+at\s+home|sample\s+from\s+home)\b/i.test(normalized);
-  const isLocationQuery = /\b(where\s+are\s+you|where\s+is|address|toopran|location|reach\s+you|directions)\b/i.test(normalized);
+  const isHomeCollectionQuery = /\b(home\s+sample|home\s+collection|doorstep|sample\s+at\s+home|sample\s+from\s+home|collect\s+my\s+(?:blood|sample)\s+at\s+home|blood\s+sample\s+from\s+home)\b/i.test(normalized);
+  const isAvailabilityQuery =
+    /\b(what\s+tests?\s+(?:do\s+you\s+(?:offer|have)|can\s+i\s+get|are\s+available)|what\s+(?:blood|diagnostic)\s+tests?\s+(?:do\s+you\s+(?:offer|have)|can\s+i\s+get|are\s+available)|which\s+(?:diagnostic\s+)?tests?\s+(?:are\s+available|can\s+i\s+get|do\s+you\s+(?:offer|have)))\b/i.test(
+      normalized
+    ) ||
+    (Boolean(entities.test) &&
+      /\b(do\s+(?:you|u)\s+(?:guys\s+)?(?:offer|do|have|provide|test)|can\s+i\s+(?:get|do|have)|is\s+.*?\s+available)\b/i.test(
+        normalized
+      ));
+  const isLocationQuery = /\b(where\s+(?:are|r)\s+(?:you|u)|where\s+is|address|toopran|location|reach\s+you|directions|what\s+(?:area|part|region)\s+(?:are|r)\s+(?:you|u)\s+in)\b/i.test(normalized);
   const isTimingQuery = /\b(timings?|hours?|opening|closing|sunday)\b/i.test(normalized) ||
     (/\b(open|close)\b/i.test(normalized) && /\b(when|what\s+time|today|tomorrow|centre|lab)\b/i.test(normalized));
-  const isContactQuery = /\b(phone|contact|number|call|whatsapp|email|customer\s+care)\b/i.test(normalized);
+  const isContactQuery = /\b(phone|contact|number|call|whatsapp|email|customer\s+care|reach\s+(?:you|the\s+centre|the\s+lab))\b/i.test(normalized);
 
   // Negation check
   const negatedBooking = hasNegation(rawText, "book") || hasNegation(rawText, "appointment");
+  const cancelling = isCancellationPhrase(normalized);
 
-  // If user says "I don't want to book", do not classify as BOOK_TEST
-  if (isBookingQuery && !negatedBooking) {
+  // Home sample collection must win over generic "book" mentions
+  // (e.g. "can I book a home sample collection").
+  if (isHomeCollectionQuery && !negatedRequest) {
     return {
-      intent: "BOOK_TEST",
+      intent: "HOME_SAMPLE_COLLECTION",
       confidence: 0.95,
       entities,
     };
   }
 
-  if (isHomeCollectionQuery) {
+  // If user says "I don't want to book", do not classify as BOOK_TEST
+  if (isBookingQuery && !negatedBooking && !negatedRequest && !cancelling) {
     return {
-      intent: "HOME_SAMPLE_COLLECTION",
+      intent: "BOOK_TEST",
       confidence: 0.95,
       entities,
     };
@@ -119,7 +148,15 @@ export function classifyIntent(
     };
   }
 
-  if (isPriceQuery) {
+  if (isAvailabilityQuery && !negatedRequest) {
+    return {
+      intent: "TEST_AVAILABILITY",
+      confidence: 0.9,
+      entities,
+    };
+  }
+
+  if (isPriceQuery && !negatedRequest) {
     return {
       intent: "TEST_PRICE",
       confidence: 0.95,
@@ -157,6 +194,18 @@ export function classifyIntent(
 
   for (const def of INTENT_DEFINITIONS) {
     if (def.name === "UNKNOWN") continue;
+
+    // Skip informational intents when the user is explicitly declining them
+    if (
+      negatedRequest &&
+      (def.name === "TEST_PRICE" ||
+        def.name === "TEST_AVAILABILITY" ||
+        def.name === "TEST_INFORMATION" ||
+        def.name === "HOME_SAMPLE_COLLECTION" ||
+        def.name === "SERVICES")
+    ) {
+      continue;
+    }
 
     // Check negation triggers
     if (def.negationTriggers?.some((trig) => normalized.includes(trig))) {
@@ -227,7 +276,7 @@ export function classifyIntent(
   const bestMatch = scoredIntents[0];
 
   // If a test entity is present alone (e.g. "CBC", "thyroid test"), classify as TEST_INFORMATION
-  if (entities.test && (!bestMatch || bestMatch.score < 0.80)) {
+  if (entities.test && !negatedRequest && (!bestMatch || bestMatch.score < 0.80)) {
     return {
       intent: "TEST_INFORMATION",
       confidence: 0.85,

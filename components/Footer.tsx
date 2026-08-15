@@ -9,7 +9,7 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-12">
           
-          {/* Col 1: Brand & Bio */}
+          {/* Col 1: Brand & Description */}
           <div className="md:col-span-5 space-y-4">
             <div className="flex items-center gap-2.5">
               <div className="w-8 h-8 rounded-lg bg-primary-600 flex items-center justify-center text-white font-bold text-sm">
@@ -20,13 +20,9 @@ export default function Footer() {
               </span>
             </div>
 
-            <p className="text-white/60 text-xs sm:text-sm leading-relaxed max-w-sm">
+            <p className="text-white/70 text-xs sm:text-sm leading-relaxed max-w-sm">
               Providing dependable diagnostic and laboratory services to patients in Toopran, Telangana, with a commitment to accuracy, care, and timely reports.
             </p>
-
-            <div className="text-[11px] text-white/40 leading-relaxed max-w-md pt-2 border-t border-white/10">
-              <span className="font-semibold text-white/60">Medical Disclaimer:</span> {centreConfig.disclaimer}
-            </div>
           </div>
 
           {/* Col 2: Quick Links */}
@@ -34,54 +30,66 @@ export default function Footer() {
             <h4 className="text-xs font-bold uppercase tracking-wider text-white">
               Navigation
             </h4>
-            <ul className="space-y-2 text-xs sm:text-sm text-white/60">
+            <ul className="space-y-2 text-xs sm:text-sm">
               <li>
-                <a href="#home" className="hover:text-white transition-colors">Home</a>
+                <a href="#home" className="text-white/70 hover:text-white transition-colors">Home</a>
               </li>
               <li>
-                <a href="#services" className="hover:text-white transition-colors">Diagnostic Services</a>
+                <a href="#services" className="text-white/70 hover:text-white transition-colors">Diagnostic Services</a>
               </li>
               <li>
-                <a href="#tests" className="hover:text-white transition-colors">Popular Tests</a>
+                <a href="#tests" className="text-white/70 hover:text-white transition-colors">Popular Tests</a>
               </li>
               <li>
-                <a href="#why-us" className="hover:text-white transition-colors">Why Choose Us</a>
+                <a href="#why-us" className="text-white/70 hover:text-white transition-colors">Why Choose Us</a>
               </li>
               <li>
-                <a href="#about" className="hover:text-white transition-colors">About Us</a>
+                <a href="#about" className="text-white/70 hover:text-white transition-colors">About Us</a>
               </li>
               <li>
-                <a href="#appointment" className="hover:text-white transition-colors">Book a Test</a>
+                <a href="#appointment" className="text-white/70 hover:text-white transition-colors">Book a Test</a>
               </li>
             </ul>
           </div>
 
-          {/* Col 3: Contact Summary */}
+          {/* Col 3: Location & Contact */}
           <div className="md:col-span-4 space-y-3">
             <h4 className="text-xs font-bold uppercase tracking-wider text-white">
               Diagnostic Centre Location
             </h4>
-            <div className="text-xs sm:text-sm text-white/60 space-y-2">
+            <div className="text-xs sm:text-sm text-white/70 space-y-2">
               <p>
                 {centreConfig.name}<br />
                 {centreConfig.location.address}<br />
-                {centreConfig.location.city}, {centreConfig.location.state}
+                {centreConfig.location.city}, {centreConfig.location.district}, {centreConfig.location.state} - {centreConfig.location.pincode}
               </p>
               <p className="pt-1">
-                <span className="text-white/40">Phone:</span> {centreConfig.contact.phone}
+                <span className="text-white/60">Phone:</span> {centreConfig.contact.phone}
               </p>
               <p>
-                <span className="text-white/40">Hours:</span> {centreConfig.hours.weekdays}
+                <span className="text-white/60">Hours:</span> {centreConfig.hours.weekdays}
               </p>
             </div>
           </div>
 
         </div>
 
+        {/* Disclaimers */}
+        <div className="mt-10 pt-6 border-t border-white/10 space-y-2 text-[11px] sm:text-xs text-white/65 leading-relaxed max-w-3xl">
+          <p>
+            <span className="font-semibold text-white/85">Demo Disclaimer:</span>{" "}
+            {centreConfig.demoDisclaimer}
+          </p>
+          <p>
+            <span className="font-semibold text-white/85">Medical Disclaimer:</span>{" "}
+            {centreConfig.disclaimer}
+          </p>
+        </div>
+
         {/* Bottom copyright bar */}
-        <div className="mt-12 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white/40">
+        <div className="mt-6 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white/60">
           <p>© {currentYear} {centreConfig.name}. All rights reserved.</p>
-          <p>Demonstration Website & Integrated AI Assistant</p>
+          <p>Demonstration Website & Integrated Diagnostic Assistant</p>
         </div>
       </div>
     </footer>

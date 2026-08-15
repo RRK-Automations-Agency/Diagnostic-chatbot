@@ -4,6 +4,8 @@ export interface Message {
   content: string;
   timestamp?: number;
   isEnquiryConfirmation?: boolean;
+  /** True when the enquiry behind a confirmation message has been successfully submitted. */
+  isEnquirySubmitted?: boolean;
   enquiryData?: {
     name: string;
     phone: string;

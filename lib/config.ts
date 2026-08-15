@@ -2,28 +2,49 @@
  * Central configuration for Asha Jyothi Diagnostic Centre.
  *
  * All business information is maintained here so verified details
- * can be inserted in one place. Placeholders are clearly marked.
+ * can be inserted in one place.
+ *
+ * NOTE: This project currently runs as a DEMO. The business values below
+ * (address, contact details, timings, pricing, etc.) are fictional
+ * demonstration data and must be verified with the real centre before
+ * production use. Do not describe them as verified information.
  */
+
+/**
+ * Flag indicating the current site content is demonstration data.
+ * Flip to `false` once real, verified client information is available.
+ */
+export const DEMO_DATA = true;
 
 export const centreConfig = {
   name: "Asha Jyothi Diagnostic Centre",
   tagline: "Reliable Diagnostics. Better Health.",
   location: {
-    address: "Toopran, Medak District",
+    address: "13-21/A/1, Keshava Nagar",
     city: "Toopran",
+    district: "Medak",
     state: "Telangana",
     country: "India",
-    pincode: "[PIN CODE TO BE VERIFIED]",
+    pincode: "502334",
     googleMapsQuery: "Asha+Jyothi+Diagnostic+Centre+Toopran+Telangana",
   },
   contact: {
-    phone: "[PHONE NUMBER TO BE VERIFIED]",
-    email: "[EMAIL TO BE VERIFIED]",
+    phone: "+91 90000 12345",
+    whatsapp: "+91 90000 12345",
+    email: "contact@ashajyothidiagnostics.com",
   },
   hours: {
-    weekdays: "[TIMINGS TO BE VERIFIED]",
-    sunday: "[TIMINGS TO BE VERIFIED]",
+    summary: "7:00 AM - 9:00 PM, Monday through Sunday",
+    weekdays: "7:00 AM - 9:00 PM",
+    sunday: "7:00 AM - 9:00 PM",
+    reportCollection: "6:00 PM - 9:00 PM",
   },
+  payments: {
+    methods: ["Cash", "UPI", "Debit/Credit Cards"],
+    display: "Cash, UPI, Debit/Credit Cards",
+  },
+  homeSampleCollection:
+    "Home sample collection is available on request within the local Toopran area in this demo. Please contact the centre to confirm availability and scheduling.",
   services: [
     {
       id: "blood-tests",
@@ -84,6 +105,8 @@ export const centreConfig = {
   ],
   disclaimer:
     "Information provided on this website and by the virtual assistant is for general informational purposes only and does not replace professional medical advice, diagnosis, or treatment.",
+  demoDisclaimer:
+    "Demo website. Business information, pricing, timings and service details shown on this website are for demonstration purposes and should be verified with the diagnostic centre before production use.",
 } as const;
 
 export type CentreConfig = typeof centreConfig;

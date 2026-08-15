@@ -39,7 +39,7 @@ export default function About() {
               </div>
               <div className="flex items-center gap-2 text-xs sm:text-sm font-medium text-text">
                 <CheckCircle className="w-4 h-4 text-accent-600 flex-shrink-0" />
-                <span>Digital enquiry & AI assistant</span>
+                <span>Digital enquiry & diagnostic assistant</span>
               </div>
               <div className="flex items-center gap-2 text-xs sm:text-sm font-medium text-text">
                 <CheckCircle className="w-4 h-4 text-accent-600 flex-shrink-0" />

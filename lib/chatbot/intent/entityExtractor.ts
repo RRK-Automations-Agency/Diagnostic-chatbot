@@ -43,6 +43,7 @@ export const TEST_CANONICAL_MAP: Record<string, { canonical: string; aliases: st
     aliases: [
       "hba1c",
       "hb a1c",
+      "hba 1c",
       "a1c",
       "glycated haemoglobin",
       "glycated hemoglobin",
@@ -152,37 +153,35 @@ export function extractTest(text: string): { canonical?: string; raw?: string } 
 }
 
 /**
- * Extracts and normalizes Indian phone number (10 digits).
+ * Extracts and normalizes an Indian mobile number (10 digits starting with 6-9).
  * Handles formats like:
  * - 9876543210
  * - +91 9876543210
- * - +91-9876543210
+ * - +91-98765-43210
  * - 09876543210
  * - 98765 43210
+ *
+ * Rejects numbers that do not start with 6-9, are longer than 10 digits
+ * (never truncates), or are too short.
  */
 export function extractPhone(text: string): string | undefined {
   if (!text) return undefined;
 
-  // Check for +91 or 0 prefix followed by 10 digits (with optional spaces/hyphens)
-  const fullMatch = text.match(/(?:\+91|91|0)?\s*[-.]?\s*([6-9]\d{4}\s*[-.]?\s*\d{5})\b/);
-  if (fullMatch) {
-    const cleaned = fullMatch[1].replace(/\D/g, "");
-    if (cleaned.length === 10) return cleaned;
+  // Normalize spacing / separators so we can reason about the digit run.
+  const compact = text.replace(/[\s\-().]+/g, "");
+
+  // Prefixed forms: +91 / 91 / 0 followed by exactly 10 digits starting with 6-9.
+  const prefixed = compact.match(/(?:\+?91|0)([6-9]\d{9})(?!\d)/);
+  if (prefixed) {
+    return prefixed[1];
   }
 
-  // Fallback 10-digit matcher
-  const digitsOnlyMatch = text.match(/\b([6-9]\d{9})\b/);
-  if (digitsOnlyMatch) {
-    return digitsOnlyMatch[1];
-  }
-
-  // General 10-digit number matcher if no prefix matched
-  const genericMatch = text.match(/\b(\d{5}\s*\d{5})\b/);
-  if (genericMatch) {
-    const cleaned = genericMatch[1].replace(/\D/g, "");
-    if (cleaned.length === 10 && !/^(\d)\1{9}$/.test(cleaned)) {
-      return cleaned;
-    }
+  // Bare 10-digit number. (?<!\d) ensures it is not part of a longer digit run
+  // (so "99999999999" can never match its first or last 10 digits) and (?!\d)
+  // prevents trailing truncation.
+  const bare = compact.match(/(?<!\d)([6-9]\d{9})(?!\d)/);
+  if (bare) {
+    return bare[1];
   }
 
   return undefined;
@@ -206,6 +205,20 @@ export function extractName(text: string, isNamePromptContext: boolean = false):
     if (isValidName(cleaned)) return cleaned;
   }
 
+  // Pattern 2: "book ... for [Name]", "... for [Name]", "... name [Name]"
+  // Only capitalized word sequences are treated as names so that arbitrary
+  // questions ("what is cbc for", "for my family") are not captured.
+  // The (?![\w]) lookahead stops fragments of test names like "HbA" from
+  // "HbA1c" (or "Vitamin D3") being captured as person names, and prevents
+  // the regex from backtracking to a shorter word fragment.
+  const forMatch = raw.match(
+    /(?:\bfor\s+|\bname\s+)([A-Z][A-Za-z]+(?:\s+[A-Z][A-Za-z]+){0,3})(?![\w])/i
+  );
+  if (forMatch) {
+    const cleaned = cleanNameCandidate(forMatch[1]);
+    if (isValidName(cleaned)) return cleaned;
+  }
+
   // If in COLLECTING_NAME dialog state context, treat the whole trimmed text as candidate
   if (isNamePromptContext) {
     const cleaned = cleanNameCandidate(raw);
@@ -218,8 +231,10 @@ export function extractName(text: string, isNamePromptContext: boolean = false):
 function cleanNameCandidate(name: string): string {
   return name
     .replace(/^(?:mr\.?|mrs\.?|ms\.?|dr\.?)\s+/i, "")
-    .replace(/\s+(?:and\s+my\s+phone|and\s+my\s+number|and\s+phone|and\s+number|and\s+i\s+want|and\s+want|and\s+my|and\s+i|phone|number|mobile|want|book|for|test).*$/i, "")
-    .replace(/[^\w\s.'-]/g, "")
+    .replace(/\s+(?:and\s+my\s+phone|and\s+my\s+number|and\s+phone|and\s+number|and\s+i\s+want|and\s+want|and\s+my|and\s+i|phone|number|mobile|want|book|for|test|please).*$/i, "")
+    .replace(/[^\w\s.'-]/g, " ")
+    .replace(/\.+$/g, "")
+    .replace(/\s+/g, " ")
     .trim();
 }
 
@@ -233,7 +248,15 @@ function isValidName(name: string): boolean {
     "cbc", "test", "book", "appointment", "help", "price", "fasting"
   ];
   if (reservedWords.includes(name.toLowerCase())) return false;
-  return /^[A-Za-z\s.'-]+$/.test(name);
+  if (!/^[A-Za-z\s.'-]+$/.test(name)) return false;
+
+  // Reject phrases / question words / test names that could never be a
+  // person's name. This stops questions ("where are you located"), refusals
+  // ("i don't want home collection") and test names following "for"
+  // ("... for blood sugar", "... for LFT") from being stored as names.
+  const phrasePattern =
+    /\b(where|what|when|how|why|who|which|want|need|not|don'?t|dont|do\s+not|never|stop|cancel|book|booking|price|fast|fasting|location|timing|timings|home|collection|offer|available|report|please|help|tell|give|test|blood|sugar|glucose|thyroid|lipid|vitamin|hba1c|a1c|cholesterol|creatinine|hemogram|haemoglobin|hemoglobin|liver|kidney|lft|kft|tsh|profile|panel|count|function|fasting\s+sugar|sugar\s+test)\b/i;
+  return !phrasePattern.test(name);
 }
 
 /**

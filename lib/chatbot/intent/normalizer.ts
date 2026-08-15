@@ -23,6 +23,8 @@ const CONTRACTIONS: Record<string, string> = {
   "you're": "you are",
   "youre": "you are",
   "it's": "it is",
+  "that's": "that is",
+  "thats": "that is",
   "what's": "what is",
   "whats": "what is",
   "where's": "where is",
@@ -36,13 +38,19 @@ const CONTRACTIONS: Record<string, string> = {
 
 // Common medical / test typos and phonetic variants
 const TEST_TYPO_MAP: [RegExp, string][] = [
-  [/\b(thryoid|thyriod|thyrod|throid)\b/g, "thyroid"],
-  [/\b(choles?terol|cholestrol|colesterol|colestrol)\b/g, "cholesterol"],
+  [/\b(thryoid|thyriod|thyrod|throid|thyrod|thyrroid)\b/g, "thyroid"],
+  [/\b(choles?terol|cholestrol|colesterol|colestrol|cholestoral)\b/g, "cholesterol"],
   [/\b(ha?emoglob[ie]n|heamoglobin|hb)\b/g, "haemoglobin"],
   [/\b(gluco[sz]e|gulcose|gloucose|glusose)\b/g, "glucose"],
-  [/\b(sug[ae]r|shugar)\b/g, "sugar"],
+  [/\b(sug[ae]r|shugar|suagr)\b/g, "sugar"],
   [/\b(vit\s*d|vitamind|vit-d|vitmin\s*d)\b/g, "vitamin d"],
-  [/\b(kidny|kidey)\b/g, "kidney"],
+  [/\b(kidny|kidey|kidny)\b/g, "kidney"],
+  [/\b(kidney\s+tes)\b/g, "kidney test"],
+  [/\b(lipd|lippid)\b/g, "lipid"],
+  [/\bblood\s+suagr\b/g, "blood sugar"],
+  [/\bblod\s+test\b/g, "blood test"],
+  [/\bblod\b/g, "blood"],
+  [/\b(hba\s+1c)\b/g, "hba1c"],
   [/\b(livr|liiver)\b/g, "liver"],
   [/\b(fastng|faasting|fastin)\b/g, "fasting"],
   [/\b(appointmnt|apppointment|apointment)\b/g, "appointment"],
@@ -113,4 +121,60 @@ export function hasNegation(text: string, targetContext?: string): boolean {
     "i"
   );
   return regex.test(norm);
+}
+
+/**
+ * Determines whether normalized text is an explicit cancellation / refusal of an
+ * active booking or enquiry. Used by the dialog manager to abort slot filling
+ * regardless of the current collection state.
+ */
+export function isCancellationPhrase(normalizedText: string): boolean {
+  const text = normalizedText.trim().toLowerCase();
+  if (!text) return false;
+
+  const exactCancellations = [
+    "cancel",
+    "cancel booking",
+    "cancel enquiry",
+    "cancel my booking",
+    "cancel the booking",
+    "stop",
+    "stop booking",
+    "abort",
+    "never mind",
+    "forget it",
+    "forget about it",
+    "leave it",
+    "leave it for now",
+    "not now",
+    "not today",
+    "no thanks",
+    "no thank you",
+    "skip it",
+    "drop it",
+    "nah",
+    "nope",
+    "forget this",
+    "no booking",
+  ];
+  if (exactCancellations.includes(text)) return true;
+
+  // "I don't want to book (anymore)", "I don't want a test", "I don't need an appointment", etc.
+  if (
+    /^(?:i\s+)?(?:do\s+not|dont|don't)\s+(?:want|need|wish)\s+(?:to\s+)?(?:book|book\s+anymore|a\s+test|an\s+enquiry|an\s+appointment|any\s+test|any\s+booking|this)/.test(
+      text
+    )
+  ) {
+    return true;
+  }
+
+  if (
+    /^(?:i\s+)?(?:changed\s+my\s+mind|maybe\s+later|some\s+other\s+time|let\s+me\s+think|hold\s+off)/.test(
+      text
+    )
+  ) {
+    return true;
+  }
+
+  return false;
 }

@@ -17,7 +17,7 @@ export default function ChatWindow({ onClose }: ChatWindowProps) {
     {
       id: "initial-welcome",
       role: "assistant",
-      content: `Hello! I'm the **${centreConfig.name}** virtual assistant. How can I help you today? Feel free to ask about our tests, sample preparation, timings, or start an enquiry.`,
+      content: `Hello! I'm the **${centreConfig.name}** diagnostic assistant. How can I help you today? Feel free to ask about our tests, sample preparation, timings, or start an enquiry.`,
       timestamp: Date.now(),
     },
   ]);
@@ -36,6 +36,31 @@ export default function ChatWindow({ onClose }: ChatWindowProps) {
     scrollToBottom();
   }, [messages, isLoading]);
 
+  const callChatApi = async (history: Message[]) => {
+    const res = await fetch("/api/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ messages: history }),
+    });
+
+    if (!res.ok) {
+      throw new Error("Chat request failed");
+    }
+
+    const data = await res.json();
+
+    const assistantMessage: Message = {
+      id: `assistant-${Date.now()}`,
+      role: "assistant",
+      content: data.content,
+      timestamp: Date.now(),
+      isEnquiryConfirmation: data.isEnquiryConfirmation,
+      enquiryData: data.enquiryData,
+    };
+
+    setMessages((prev) => [...prev, assistantMessage]);
+  };
+
   const handleSendMessage = async (textToSend?: string) => {
     const content = (textToSend ?? inputValue).trim();
     if (!content || isLoading) return;
@@ -53,43 +78,83 @@ export default function ChatWindow({ onClose }: ChatWindowProps) {
     setIsLoading(true);
     setHasError(false);
 
-    try {
-      const res = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: newMessages }),
-      });
+    // If the last visible assistant message is an enquiry summary and the user
+    // confirms it in text ("yes", "submit", "ok"), submit it directly — exactly
+    // like the Submit Enquiry button. This keeps both submission paths consistent.
+    const lastMsg = messages[messages.length - 1];
+    const isConfirmingReply =
+      Boolean(lastMsg?.isEnquiryConfirmation && lastMsg?.enquiryData) &&
+      /^(yes|yeah|yup|yep|sure|confirm|submit|proceed|ok|okay|send|go ahead|yes please|please submit)[\s!.]*$/i.test(
+        content
+      );
 
-      if (!res.ok) {
-        throw new Error("Chat request failed");
+    try {
+      if (isConfirmingReply) {
+        const res = await fetch("/api/enquiries", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(lastMsg!.enquiryData),
+        });
+
+        if (!res.ok) {
+          throw new Error("Enquiry submission failed");
+        }
+
+        const data = await res.json();
+        setMessages((prev) => [
+          ...prev,
+          {
+            id: `confirmed-${Date.now()}`,
+            role: "assistant",
+            content:
+              data.message ||
+              "Your test enquiry has been submitted. Our team can contact you to confirm availability.",
+            // Marks the enquiry as submitted so the backend never reconstructs
+            // an active booking from this historical summary.
+            isEnquirySubmitted: true,
+            timestamp: Date.now(),
+          },
+        ]);
+        return;
       }
 
-      const data = await res.json();
-
-      const assistantMessage: Message = {
-        id: `assistant-${Date.now()}`,
-        role: "assistant",
-        content: data.content,
-        timestamp: Date.now(),
-        isEnquiryConfirmation: data.isEnquiryConfirmation,
-        enquiryData: data.enquiryData,
-      };
-
-      setMessages((prev) => [...prev, assistantMessage]);
+      await callChatApi(newMessages);
     } catch {
-      setHasError(true);
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: `err-${Date.now()}`,
-          role: "assistant",
-          content:
-            "I could not connect to the assistant server right now. Please try again or contact the diagnostic centre directly at " +
-            centreConfig.contact.phone +
-            ".",
-          timestamp: Date.now(),
-        },
-      ]);
+      // If the direct submission failed, fall back to the chat API so the user
+      // still gets guidance (and the summary stays submittable via the button).
+      if (isConfirmingReply) {
+        try {
+          await callChatApi(newMessages);
+        } catch {
+          setHasError(true);
+          setMessages((prev) => [
+            ...prev,
+            {
+              id: `err-${Date.now()}`,
+              role: "assistant",
+              content:
+                "I could not connect to the assistant server right now. Please try again or contact the diagnostic centre directly at " +
+                centreConfig.contact.phone +
+                ".",
+              timestamp: Date.now(),
+            },
+          ]);
+        }
+      } else {
+        setHasError(true);
+        setMessages((prev) => [
+          ...prev,
+          {
+            id: `err-${Date.now()}`,
+            role: "assistant",
+            content:
+              "I could not connect to the assistant server right now. Please try again or contact the diagnostic centre directly at " +
+              centreConfig.contact.phone +
+              ".",
+            timestamp: Date.now(),
+          },
+        ]);
+      }
     } finally {
       setIsLoading(false);
     }
@@ -107,7 +172,7 @@ export default function ChatWindow({ onClose }: ChatWindowProps) {
       {
         id: `welcome-${Date.now()}`,
         role: "assistant",
-        content: `Hello! I'm the **${centreConfig.name}** virtual assistant. How can I help you today?`,
+        content: `Hello! I'm the **${centreConfig.name}** diagnostic assistant. How can I help you today?`,
         timestamp: Date.now(),
       },
     ]);
@@ -121,6 +186,9 @@ export default function ChatWindow({ onClose }: ChatWindowProps) {
         id: `confirmed-${Date.now()}`,
         role: "assistant",
         content: successMsg,
+        // Marks the enquiry as submitted so the backend never reconstructs
+        // an active booking from this historical summary.
+        isEnquirySubmitted: true,
         timestamp: Date.now(),
       },
     ]);
@@ -140,10 +208,10 @@ export default function ChatWindow({ onClose }: ChatWindowProps) {
           </div>
           <div>
             <h3 className="font-semibold text-sm leading-tight text-white">
-              Asha Jyothi Assistant
+              Asha Jyothi Diagnostic Assistant
             </h3>
             <span className="text-[11px] text-primary-200 block">
-              Virtual Diagnostic Assistant
+              How can I help you today?
             </span>
           </div>
         </div>

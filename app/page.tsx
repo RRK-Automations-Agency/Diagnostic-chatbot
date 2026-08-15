@@ -42,7 +42,7 @@ export default function Home() {
       {/* Footer & Disclaimers */}
       <Footer />
 
-      {/* Floating 24/7 AI Diagnostic Assistant */}
+      {/* Floating 24/7 Diagnostic Assistant */}
       <ChatbotWidget />
     </div>
   );

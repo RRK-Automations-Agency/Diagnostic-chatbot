@@ -14,6 +14,7 @@ export const INTENT_DEFINITIONS: IntentDefinition[] = [
       /\b(trouble\s+breathing|cannot\s+breathe|difficulty\s+breathing|shortness\s+of\s+breath)\b/i,
       /\b(unconscious|unresponsive|passed\s+out|collapsed|fainted)\b/i,
       /\b(severe\s+bleeding|heavy\s+bleeding|profuse\s+bleeding)\b/i,
+      /\b(bleeding\s+(?:heavily|badly|a\s+lot|profusely|continuously|uncontrollably|excessively|non[-\s]?stop)|(?:can'?t|cannot|won'?t|unable\s+to)\s+stop\s+bleeding)\b/i,
       /\b(emergency\s+help|urgent\s+emergency|medical\s+emergency)\b/i,
       /\b(stroke|paralysis|sudden\s+numbness|face\s+drooping)\b/i,
       /\b(severe\s+sudden\s+symptoms|severe\s+pain)\b/i,
@@ -35,13 +36,27 @@ export const INTENT_DEFINITIONS: IntentDefinition[] = [
     description: "Requests for medical diagnosis, drug prescription, or clinical assessment",
     priority: 90,
     patterns: [
-      /\b(what\s+medicine\s+should\s+i\s+take|which\s+medicine\s+is\s+best|what\s+tablet\s+should\s+i\s+take)\b/i,
+      /\b(what\s+medicine\s+should\s+i\s+take|which\s+medicine\s+(?:should\s+i\s+take|is\s+best)|what\s+tablet\s+should\s+i\s+take)\b/i,
       /\b(what\s+treatment\s+should\s+i\s+take|how\s+to\s+cure|how\s+to\s+treat)\b/i,
-      /\b(do\s+i\s+have\s+diabetes|what\s+disease\s+do\s+i\s+have|diagnose\s+me|what\s+is\s+wrong\s+with\s+me)\b/i,
+      /\b(do\s+i\s+have\s+(?:diabetes|cancer|a\s+disease|any\s+disease|hiv|aids|tb|tuberculosis|hepatitis|an\s+infection|infection|kidney\s+disease|liver\s+disease|heart\s+disease|thyroid\s+disease|high\s+sugar|high\s+cholesterol))\b/i,
+      /\b(what\s+disease\s+do\s+i\s+have|diagnose\s+me|what\s+is\s+wrong\s+with\s+me)\b/i,
       /\b(what\s+does\s+my\s+report\s+mean|is\s+my\s+blood\s+sugar\s+dangerous|is\s+my\s+.*?\s+dangerou?s)\b/i,
       /\b(wbc\s+is\s+high|platelets\s+are\s+low|haemoglobin\s+is\s+low|high\s+creatinine|abnormal\s+report)\b/i,
       /\b(prescribe\s+(?:me|medicine)|suggest\s+medicine|recommend\s+tablet|medicine\s+for\s+fever)\b/i,
-      /\b(interpret\s+(?:my\s+)?report|explain\s+my\s+results?)\b/i,
+      /\b(interpret\s+(?:my\s+|this\s+|the\s+)?(?:report|reports|results?|cbc|blood\s+test|test\s+results?)|explain\s+my\s+results?)\b/i,
+      /\b(?:read|check|review|examine)\s+(?:my\s+|this\s+|the\s+)?report\b/i,
+      /\b(?:is|are)\s+(?:this|my|the)\s+(?:report|reports|results?)\s+(?:normal|abnormal|ok|okay|fine|good|bad|high|low)\b/i,
+      /\bwhat\s+(?:does|do)\s+(?:my|the)\s+(?:report|reports|results?|test\s+results?|reading|value|levels?)\s+(?:mean|show|indicate|say)\b/i,
+      /\b(?:is|are)\s+(?:my|this|that)\s+(?:result|results?|report|reading|sugar|blood\s+sugar|glucose|wbc|hba1c|cholesterol|creatinine|platelets?|bp|blood\s+pressure|vitamin\s+d|thyroid)\s+(?:dangerous|unsafe|high|low|bad|abnormal)\b/i,
+      /\bwhat\s+should\s+i\s+do\s+(?:about|with)\s+(?:my|this|the)\s+(?:result|results?|report|sugar|blood\s+sugar|wbc|hba1c|cholesterol|reading|level|levels?)\b/i,
+      /\bmy\s+(?:wbc|hba1c|sugar|blood\s+sugar|glucose|cholesterol|creatinine|platelets?|haemoglobin|hemoglobin|thyroid|tsh|triglycerides?|vitamin\s*d|bp|blood\s+pressure)\s+(?:is|are)\s+\d+(?:\.\d+)?\b/i,
+      /\bmy\s+(?:sugar|blood\s+sugar|glucose|cholesterol|wbc|hba1c|creatinine|platelets?|haemoglobin|hemoglobin|bp|blood\s+pressure|vitamin\s+d|thyroid)\s+(?:is|are)\s+(?:high|low|normal|abnormal|dangerous|bad|too\s+high|too\s+low)\b/i,
+      /\b(?:what|which)\s+(?:medicine|tablet|drug|treatment|remedy|antibiotics?|painkillers?)\s+(?:should\s+i\s+take|do\s+i\s+need|can\s+i\s+take|for)\b/i,
+      /\bshould\s+i\s+take\s+(?:antibiotics?|medicine|tablets?|pills?|drugs?|painkillers?|steroids?|paracetamol|aspirin)\b/i,
+      /\bwhat\s+should\s+i\s+take\s+for\b(?!.*\btest\b)/i,
+      /\b(?:what\s+(?:medicine|tablet|drug)\s+|what\s+can\s+|medicine\s+that\s+)(?:lowers?|reduces?|controls?|brings?\s+down)\s+(?:my\s+)?(?:sugar|blood\s+sugar|glucose|cholesterol|bp|blood\s+pressure)\b/i,
+      /\b(?:give\s+me\s+a\s+prescription|prescription\s+for)\b/i,
+      /\bwhat\s+(?:disease|condition|problem)\s+does\s+(?:my|the)\s+(?:report|results?)\s+show\b/i,
     ],
     keywords: [
       "medicine",
@@ -71,6 +86,8 @@ export const INTENT_DEFINITIONS: IntentDefinition[] = [
       /\b(schedule\s+my\s+test|make\s+an?\s+appointment|reserve\s+a\s+test|book\s+appointment)\b/i,
       /\b(book\s+cbc|book\s+blood\s+test|book\s+sugar\s+test|book\s+thyroid|book\s+lipid)\b/i,
       /\b(take\s+appointment|test\s+booking|appointment\s+for\s+test)\b/i,
+      /\b(i\s+need\s+to\s+get\s+tested|need\s+to\s+get\s+(?:a\s+)?test|need\s+(?:a\s+)?blood\s+test|i\s+want\s+an?\s+appointment|i\s+want\s+to\s+make\s+an?\s+appointment)\b/i,
+      /\b(can\s+you\s+book\s+(?:a\s+test|me|an\s+appointment)|can\s+you\s+schedule\s+(?:a\s+test|me)|can\s+i\s+book\s+(?:a\s+)?test)\b/i,
     ],
     keywords: [
       "book",
@@ -96,6 +113,8 @@ export const INTENT_DEFINITIONS: IntentDefinition[] = [
       /\b(tell\s+me\s+about\s+the\s+centre|what\s+is\s+this\s+diagnostic\s+centre|what\s+do\s+you\s+do)\b/i,
       /\b(tell\s+me\s+about\s+asha\s+jyothi|about\s+the\s+centre|about\s+asha\s+jyothi|who\s+are\s+you)\b/i,
       /\b(what\s+is\s+asha\s+jyothi|centre\s+details|about\s+lab|about\s+diagnostic\s+centre)\b/i,
+      /\b(what\s+kind\s+of\s+centre\s+is\s+this|what\s+type\s+of\s+centre\s+is\s+this)\b/i,
+      /\b(about\s+(?:the\s+|your\s+)?diagnostic\s+centre|tell\s+me\s+about\s+(?:the\s+|your\s+)?diagnostic\s+centre|give\s+me\s+information\s+about\s+the\s+centre)\b/i,
     ],
     keywords: [
       "about the centre",
@@ -112,7 +131,7 @@ export const INTENT_DEFINITIONS: IntentDefinition[] = [
     priority: 80,
     patterns: [
       /\b(do\s+i\s+need\s+to\s+fast|should\s+i\s+fast|how\s+should\s+i\s+prepare|how\s+to\s+prepare)\b/i,
-      /\b(can\s+i\s+eat\s+before|what\s+should\s+i\s+do\s+before|can\s+i\s+drink\s+water\s+before)\b/i,
+      /\b(can\s+i\s+eat\s+before|what\s+should\s+i\s+do\s+before|can\s+i\s+drink\s+water|can\s+i\s+have\s+breakfast)\b/i,
       /\b(fasting\s+required|need\s+fasting|fasting\s+for|empty\s+stomach|fasting\s+hours)\b/i,
       /\b(preparation\s+for\s+.*?\s+test|preparation\s+needed|diet\s+before\s+test)\b/i,
     ],
@@ -134,8 +153,8 @@ export const INTENT_DEFINITIONS: IntentDefinition[] = [
     priority: 75,
     patterns: [
       /\b(how\s+much\s+(?:does|is|for)|what\s+is\s+the\s+price|how\s+much\s+do\s+you\s+charge)\b/i,
-      /\b(cost\s+of|test\s+cost|price\s+of|price\s+list|test\s+price|rate\s+of|charges?\s+for)\b/i,
-      /\b(what\s+are\s+your\s+rates|fees?\s+for|fee\s+structure)\b/i,
+      /\b(cost\s+of|test\s+cost|price\s+of|price\s+list|test\s+prices?|rate\s+of|charges?\s+for)\b/i,
+      /\b(what\s+are\s+your\s+(?:test\s+)?prices?|what\s+are\s+your\s+rates|fees?\s+for|fee\s+structure)\b/i,
     ],
     keywords: [
       "price",
@@ -157,8 +176,11 @@ export const INTENT_DEFINITIONS: IntentDefinition[] = [
     priority: 70,
     patterns: [
       /\b(what\s+tests\s+do\s+you\s+offer|which\s+tests\s+are\s+available|what\s+blood\s+tests\s+do\s+you\s+have)\b/i,
-      /\b(do\s+you\s+do\s+.*?|is\s+.*?\s+available|can\s+i\s+get\s+a\s+.*?\s+test|do\s+you\s+have\s+.*?)\b/i,
-      /\b(what\s+diagnostic\s+tests\s+can\s+i\s+do|which\s+tests\s+can\s+i\s+get|tests?\s+list|list\s+of\s+tests?)\b/i,
+      /\b(do\s+you\s+do\s+(?:cbc|blood|sugar|thyroid|lipid|vitamin|lft|kft|hba1c|glucose|hemogram|tests?)|do\s+you\s+do\s+.*?\s+testing)\b/i,
+      /\b(is\s+(?:a\s+|an\s+)?(?:cbc|blood\s+test|sugar\s+test|thyroid|lipid|vitamin|lft|kft|hba1c|complete\s+blood\s+count)\s+available)\b/i,
+      /\b(can\s+i\s+get\s+(?:a\s+|an\s+)?(?:cbc|blood\s+test|sugar\s+test|thyroid|lipid|vitamin|lft|kft|hba1c|test))\b/i,
+      /\b(do\s+you\s+(?:offer|provide|have)\s+(?:a\s+|an\s+)?(?:cbc|blood\s+test|sugar\s+test|thyroid|thyroid\s+testing|lipid|vitamin|lft|kft|hba1c|test))\b/i,
+      /\b(what\s+diagnostic\s+tests\s+(?:can\s+i\s+do|are\s+available)|which\s+(?:diagnostic\s+)?tests\s+can\s+i\s+get|tests?\s+list|list\s+of\s+tests?)\b/i,
       /\b(available\s+tests?|all\s+tests?|show\s+tests?|blood\s+test\s+options)\b/i,
     ],
     keywords: [
@@ -199,6 +221,8 @@ export const INTENT_DEFINITIONS: IntentDefinition[] = [
       /\b(home\s+(?:blood|sample)?\s*collection|can\s+i\s+give\s+blood\s+sample\s+from\s+home)\b/i,
       /\b(do\s+you\s+provide\s+home\s+collection|can\s+you\s+collect\s+my\s+sample\s+at\s+home)\b/i,
       /\b(doorstep\s+collection|home\s+visit|phlebotomist\s+visit|sample\s+pickup)\b/i,
+      /\b(can\s+someone\s+(?:collect|pick\s+up)\s+my\s+(?:blood|sample)|collect\s+my\s+(?:blood|sample)\s+at\s+home)\b/i,
+      /\b(can\s+i\s+book\s+a\s+home\s+sample\s+collection|home\s+sample\s+collection\s+booking)\b/i,
     ],
     keywords: [
       "home collection",
@@ -217,6 +241,7 @@ export const INTENT_DEFINITIONS: IntentDefinition[] = [
     patterns: [
       /\b(when\s+will\s+i\s+get\s+my\s+report|how\s+do\s+i\s+collect\s+my\s+report|can\s+i\s+get\s+my\s+report\s+online)\b/i,
       /\b(how\s+long\s+do\s+reports\s+take|where\s+can\s+i\s+get\s+my\s+report|is\s+my\s+report\s+ready)\b/i,
+      /\b(how\s+long\s+(?:does|will)\s+.*?\s+take|when\s+will\s+(?:the|my)\s+results?\s+(?:come|be\s+ready|be\s+out)|when\s+can\s+i\s+collect\s+my\s+report)\b/i,
       /\b(report\s+delivery|report\s+status|report\s+time|download\s+report|online\s+reports?)\b/i,
     ],
     keywords: [
@@ -237,6 +262,7 @@ export const INTENT_DEFINITIONS: IntentDefinition[] = [
       /\b(where\s+are\s+you\s+located|where\s+is\s+the\s+centre|what\s+is\s+your\s+address)\b/i,
       /\b(location\s+please|how\s+do\s+i\s+reach\s+you|where\s+is\s+asha\s+jyothi)\b/i,
       /\b(are\s+you\s+in\s+toopran|directions|map\s+link|google\s+maps|address\s+of\s+lab)\b/i,
+      /\b(what\s+(?:area|part|region)\s+are\s+you\s+in|which\s+area\s+are\s+you\s+in)\b/i,
     ],
     keywords: [
       "location",
@@ -258,6 +284,7 @@ export const INTENT_DEFINITIONS: IntentDefinition[] = [
       /\b(what\s+are\s+your\s+timings|when\s+are\s+you\s+open|when\s+does\s+the\s+lab\s+open)\b/i,
       /\b(when\s+do\s+you\s+close|are\s+you\s+open\s+today|what\s+time\s+can\s+i\s+visit)\b/i,
       /\b(operating\s+hours|working\s+hours|sunday\s+timings?|opening\s+time|closing\s+time)\b/i,
+      /\b(when\s+can\s+i\s+(?:visit|come)|what\s+time\s+should\s+i\s+(?:come|visit)|when\s+should\s+i\s+(?:visit|come))\b/i,
     ],
     keywords: [
       "timings",
@@ -290,6 +317,9 @@ export const INTENT_DEFINITIONS: IntentDefinition[] = [
       "email",
       "mobile",
       "telephone",
+      "payment",
+      "payments",
+      "upi",
     ],
   },
   {
@@ -300,6 +330,8 @@ export const INTENT_DEFINITIONS: IntentDefinition[] = [
       /\b(what\s+services\s+do\s+you\s+provide|what\s+do\s+you\s+offer|what\s+can\s+i\s+get\s+done\s+here)\b/i,
       /\b(what\s+diagnostic\s+services\s+are\s+available|do\s+you\s+provide\s+blood\s+tests|do\s+you\s+provide\s+pathology)\b/i,
       /\b(list\s+of\s+services|our\s+services|all\s+services|health\s+services)\b/i,
+      /\b(what\s+kind\s+of\s+testing\s+do\s+you\s+do|what\s+kinds?\s+of\s+tests?\s+do\s+you\s+do)\b/i,
+      /\b(what\s+diagnostic\s+services\s+do\s+you\s+have|what\s+diagnostic\s+services\s+can\s+i\s+get)\b/i,
     ],
     keywords: [
       "services",
@@ -318,6 +350,8 @@ export const INTENT_DEFINITIONS: IntentDefinition[] = [
     patterns: [
       /^(hi|hello|hey|namaste|hi\s+there|good\s+morning|good\s+afternoon|good\s+evening|greetings)[\s!.]*$/i,
       /\b(hello\s+there|hey\s+there|namaskaram)\b/i,
+      /\b(are\s+you\s+there|you\s+there)\b/i,
+      /\b(hi\s+assistant|hello\s+assistant)\b/i,
     ],
     keywords: [
       "hi",
@@ -337,6 +371,7 @@ export const INTENT_DEFINITIONS: IntentDefinition[] = [
     patterns: [
       /^(thanks|thank\s+you|thank\s+u|appreciate\s+it|many\s+thanks|thanks\s+a\s+lot)[\s!.]*$/i,
       /\b(thank\s+you\s+so\s+much|thanks\s+for\s+the\s+help|great\s+thanks)\b/i,
+      /\b(much\s+appreciated|i\s+appreciate\s+it|that\s+is\s+helpful|that\s*\s+helped)\b/i,
     ],
     keywords: [
       "thanks",
@@ -352,7 +387,8 @@ export const INTENT_DEFINITIONS: IntentDefinition[] = [
     priority: 15,
     patterns: [
       /^(bye|goodbye|see\s+you|that\s*is\s*all|thats\s+all|talk\s+later|have\s+a\s+good\s+day)[\s!.]*$/i,
-      /\b(bye\s+bye|take\s+care|catch\s+you\s+later)\b/i,
+      /\b(bye\s+bye|take\s+care|catch\s+you\s+later|see\s+you\s+(?:later|soon|tomorrow)|talk\s+to\s+you\s+later|thanks\s+bye|thank\s+you\s+bye|okay\s+bye|ok\s+bye)\b/i,
+      /\b(i\s+am\s+done|i\s+am\s+finished|im\s+done)\b/i,
     ],
     keywords: [
       "bye",
@@ -371,6 +407,7 @@ export const INTENT_DEFINITIONS: IntentDefinition[] = [
     patterns: [
       /^(help|what\s+can\s+you\s+do|what\s+can\s+i\s+ask|how\s+can\s+you\s+help\s+me|menu|options)[\s!.]*$/i,
       /\b(how\s+to\s+use|guide\s+me|assist\s+me|chatbot\s+capabilities)\b/i,
+      /\b(what\s+information\s+can\s+you\s+provide|what\s+are\s+you\s+able\s+to\s+do|what\s+services\s+can\s+you\s+help\s+me\s+with|tell\s+me\s+what\s+you\s+can\s+do|can\s+you\s+help\s+me|i\s+need\s+some\s+help)\b/i,
     ],
     keywords: [
       "help",

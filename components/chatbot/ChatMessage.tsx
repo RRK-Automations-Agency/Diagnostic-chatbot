@@ -13,10 +13,13 @@ interface ChatMessageProps {
 export default function ChatMessage({ message, onEnquirySubmitted }: ChatMessageProps) {
   const isUser = message.role === "user";
   const [submissionState, setSubmissionState] = useState<"idle" | "submitting" | "confirmed" | "cancelled">("idle");
+  const [submissionError, setSubmissionError] = useState(false);
 
   const handleConfirmEnquiry = async () => {
+    if (submissionState !== "idle") return; // prevent double submission
     if (!message.enquiryData) return;
     setSubmissionState("submitting");
+    setSubmissionError(false);
 
     try {
       const res = await fetch("/api/enquiries", {
@@ -24,6 +27,9 @@ export default function ChatMessage({ message, onEnquirySubmitted }: ChatMessage
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(message.enquiryData),
       });
+      if (!res.ok) {
+        throw new Error("Enquiry submission failed");
+      }
       const data = await res.json();
       setSubmissionState("confirmed");
       if (onEnquirySubmitted) {
@@ -33,12 +39,10 @@ export default function ChatMessage({ message, onEnquirySubmitted }: ChatMessage
         );
       }
     } catch {
-      setSubmissionState("confirmed");
-      if (onEnquirySubmitted) {
-        onEnquirySubmitted(
-          "Your test enquiry has been submitted. Our team can contact you to confirm availability."
-        );
-      }
+      // Do NOT show a success message when the submission actually failed —
+      // reset so the user can retry.
+      setSubmissionError(true);
+      setSubmissionState("idle");
     }
   };
 
@@ -104,6 +108,12 @@ export default function ChatMessage({ message, onEnquirySubmitted }: ChatMessage
         {/* Interactive Action Buttons if message is an enquiry summary */}
         {message.isEnquiryConfirmation && message.enquiryData && (
           <div className="p-3 bg-white border border-border rounded-xl shadow-xs space-y-2">
+            {submissionError && (
+              <div className="text-xs text-red-600 bg-red-50 p-2 rounded-lg border border-red-100 mb-2">
+                We could not submit the enquiry. Please try again.
+              </div>
+            )}
+
             {submissionState === "idle" && (
               <div className="flex items-center gap-2">
                 <button

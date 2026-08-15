@@ -114,8 +114,8 @@ export default function Hero() {
                 <div className="p-3.5 rounded-xl bg-surface-dim border border-border-light flex items-start gap-3.5">
                   <CheckCircle2 className="w-5 h-5 text-accent-600 mt-0.5 flex-shrink-0" />
                   <div>
-                    <h4 className="text-sm font-semibold text-text">Digital Virtual Assistant</h4>
-                    <p className="text-xs text-text-secondary mt-0.5">Use our integrated 24/7 AI chatbot in the corner for test enquiry & details.</p>
+                    <h4 className="text-sm font-semibold text-text">Digital Diagnostic Assistant</h4>
+                    <p className="text-xs text-text-secondary mt-0.5">Use our integrated 24/7 Diagnostic Assistant in the corner for test enquiry & details.</p>
                   </div>
                 </div>
               </div>

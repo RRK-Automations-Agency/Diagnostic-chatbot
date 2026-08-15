@@ -39,7 +39,7 @@ export default function Contact() {
               <p className="text-sm text-text-secondary leading-relaxed">
                 {centreConfig.name}<br />
                 {centreConfig.location.address}<br />
-                {centreConfig.location.city}, {centreConfig.location.state}, {centreConfig.location.country}
+                {centreConfig.location.city}, {centreConfig.location.district}, {centreConfig.location.state} - {centreConfig.location.pincode}
               </p>
             </div>
 
