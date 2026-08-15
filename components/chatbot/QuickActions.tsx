@@ -31,7 +31,7 @@ export default function QuickActions({ onSelectAction, disabled }: QuickActionsP
               type="button"
               disabled={disabled}
               onClick={() => onSelectAction(act.text)}
-              className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-white border border-border text-xs font-medium text-text-secondary hover:text-primary-700 hover:border-primary-300 hover:bg-primary-50/50 active:scale-95 disabled:opacity-50 disabled:pointer-events-none transition-all shadow-xs"
+              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-white border border-border text-xs font-medium text-text-secondary hover:text-primary-700 hover:border-primary-300 hover:bg-primary-50/50 active:scale-95 disabled:opacity-50 disabled:pointer-events-none transition-all shadow-xs"
             >
               <Icon className="w-3 h-3 text-primary-600" />
               <span>{act.label}</span>

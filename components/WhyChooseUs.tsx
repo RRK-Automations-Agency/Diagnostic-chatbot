@@ -12,13 +12,13 @@ export default function WhyChooseUs() {
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
           <span className="text-xs font-bold uppercase tracking-wider text-accent-600 block mb-1">
-            Commitment to Quality
+            About This Demo Centre
           </span>
-          <h2 className="text-3xl sm:text-4xl font-bold text-primary-900 tracking-tight">
+          <h2 className="text-3xl sm:text-4xl font-bold text-primary-900 tracking-tight text-balance">
             Why Choose Asha Jyothi
           </h2>
           <p className="mt-3 text-base text-text-secondary">
-            Focused on precision, reliability, and compassionate patient care for every diagnostic test.
+            Clear information and helpful support designed around routine diagnostic enquiries.
           </p>
         </div>
 

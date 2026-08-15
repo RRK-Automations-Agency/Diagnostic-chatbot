@@ -101,7 +101,7 @@ export default function AppointmentForm() {
             <span className="text-xs font-bold uppercase tracking-wider text-accent-400 block">
               Patient Enquiries
             </span>
-            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
+            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-balance">
               Book a Test or Submit an Enquiry
             </h2>
             <p className="text-primary-100 text-sm sm:text-base leading-relaxed">
@@ -172,7 +172,7 @@ export default function AppointmentForm() {
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                         placeholder="e.g. Ramesh Kumar"
-                        className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-border focus:border-primary-600 focus:ring-1 focus:ring-primary-600 outline-none text-sm text-text transition-colors"
+                        className="w-full pl-10 pr-4 py-3 rounded-xl border border-border focus:border-primary-600 focus:ring-1 focus:ring-primary-600 outline-none text-sm text-text transition-colors"
                       />
                     </div>
                     {errors.name && <p className="text-xs text-red-500 mt-1">{errors.name}</p>}
@@ -195,7 +195,7 @@ export default function AppointmentForm() {
                           value={formData.phone}
                           onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                           placeholder="e.g. 9876543210"
-                          className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-border focus:border-primary-600 focus:ring-1 focus:ring-primary-600 outline-none text-sm text-text transition-colors"
+                          className="w-full pl-10 pr-4 py-3 rounded-xl border border-border focus:border-primary-600 focus:ring-1 focus:ring-primary-600 outline-none text-sm text-text transition-colors"
                         />
                       </div>
                       {errors.phone && <p className="text-xs text-red-500 mt-1">{errors.phone}</p>}
@@ -215,7 +215,7 @@ export default function AppointmentForm() {
                           type="date"
                           value={formData.date}
                           onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                          className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-border focus:border-primary-600 focus:ring-1 focus:ring-primary-600 outline-none text-sm text-text transition-colors"
+                          className="w-full pl-10 pr-4 py-3 rounded-xl border border-border focus:border-primary-600 focus:ring-1 focus:ring-primary-600 outline-none text-sm text-text transition-colors"
                         />
                       </div>
                     </div>
@@ -230,7 +230,7 @@ export default function AppointmentForm() {
                       id="form-test"
                       value={formData.test}
                       onChange={(e) => setFormData({ ...formData, test: e.target.value })}
-                      className="w-full px-4 py-2.5 rounded-xl border border-border focus:border-primary-600 focus:ring-1 focus:ring-primary-600 outline-none text-sm text-text transition-colors bg-white"
+                      className="w-full px-4 py-3 rounded-xl border border-border focus:border-primary-600 focus:ring-1 focus:ring-primary-600 outline-none text-sm text-text transition-colors bg-white"
                     >
                       <option value="">-- Choose a test or category --</option>
                       {allTestOptions.map((opt) => (
@@ -257,7 +257,7 @@ export default function AppointmentForm() {
                         value={formData.message}
                         onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                         placeholder="e.g. Need home collection in Toopran area..."
-                        className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-border focus:border-primary-600 focus:ring-1 focus:ring-primary-600 outline-none text-sm text-text transition-colors"
+                        className="w-full pl-10 pr-4 py-3 rounded-xl border border-border focus:border-primary-600 focus:ring-1 focus:ring-primary-600 outline-none text-sm text-text transition-colors resize-y"
                       />
                     </div>
                   </div>
@@ -266,7 +266,7 @@ export default function AppointmentForm() {
                   <button
                     type="submit"
                     disabled={status === "submitting"}
-                    className="w-full mt-2 bg-primary-600 hover:bg-primary-700 disabled:bg-primary-400 text-white font-medium py-3 rounded-xl shadow-sm hover:shadow transition-all flex items-center justify-center gap-2 text-sm sm:text-base focus-visible:ring-2 focus-visible:ring-primary-600"
+                    className="w-full mt-2 bg-primary-600 hover:bg-primary-700 disabled:bg-primary-400 text-white font-medium py-3.5 rounded-xl shadow-sm hover:shadow transition-all flex items-center justify-center gap-2 text-sm sm:text-base focus-visible:ring-2 focus-visible:ring-primary-600"
                   >
                     {status === "submitting" ? (
                       <>

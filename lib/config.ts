@@ -50,25 +50,25 @@ export const centreConfig = {
       id: "blood-tests",
       title: "Blood Tests",
       description:
-        "Comprehensive blood testing services for routine and specialized diagnostic needs.",
+        "Information and enquiry support for routine and specialised blood testing needs.",
     },
     {
       id: "pathology",
       title: "Pathology",
       description:
-        "Accurate pathology services to support clinical diagnosis and patient care.",
+        "Clear information about pathology testing to support clinical diagnosis and patient care.",
     },
     {
       id: "health-checkups",
       title: "Health Checkups",
       description:
-        "Preventive health checkup packages for early detection and wellness monitoring.",
+        "Information about preventive health checkup options for wellness monitoring.",
     },
     {
       id: "home-collection",
       title: "Home Sample Collection",
       description:
-        "Convenient sample collection from the comfort of your home for eligible tests.",
+        "Home sample collection information and enquiry support for eligible tests.",
     },
   ],
   popularTests: [
@@ -83,24 +83,24 @@ export const centreConfig = {
   ],
   whyChooseUs: [
     {
-      title: "Reliable Testing",
+      title: "Clear Test Information",
       description:
-        "Consistent and dependable diagnostic testing with attention to quality at every step.",
+        "Designed to present diagnostic information clearly and help patients with routine enquiries.",
     },
     {
-      title: "Experienced Staff",
+      title: "Patient Support",
       description:
-        "A team of trained professionals committed to accurate sample handling and analysis.",
+        "Support for patients with test enquiries, preparation questions, and appointment requests.",
     },
     {
-      title: "Timely Reports",
+      title: "Report Guidance",
       description:
-        "Focused on delivering your diagnostic reports without unnecessary delays.",
+        "Clear information about how reports are shared and where to collect them.",
     },
     {
-      title: "Patient-Friendly Service",
+      title: "Helpful Guidance",
       description:
-        "A welcoming environment with clear communication and helpful guidance throughout your visit.",
+        "A welcoming, easy-to-follow experience with clear communication throughout your visit.",
     },
   ],
   disclaimer:

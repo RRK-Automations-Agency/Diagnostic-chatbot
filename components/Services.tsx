@@ -22,11 +22,11 @@ export default function Services() {
           <h2 className="text-xs font-bold uppercase tracking-wider text-accent-600 mb-2">
             Diagnostic Solutions
           </h2>
-          <p className="text-3xl sm:text-4xl font-bold text-primary-900 tracking-tight">
+          <p className="text-3xl sm:text-4xl font-bold text-primary-900 tracking-tight text-balance">
             Our Core Diagnostic Services
           </p>
           <p className="mt-3 text-base text-text-secondary">
-            Providing reliable laboratory and screening services tailored to meet everyday health needs and clinical assessments.
+            Information about laboratory and screening services to support everyday health needs and clinical assessments.
           </p>
         </div>
 
@@ -62,7 +62,7 @@ export default function Services() {
                 <div className="mt-6 pt-4 border-t border-border-light flex items-center justify-between">
                   <a
                     href="#appointment"
-                    className="text-xs font-semibold text-primary-600 hover:text-primary-700 inline-flex items-center gap-1 group/link"
+                    className="text-xs font-semibold text-primary-600 hover:text-primary-700 inline-flex items-center gap-1 group/link py-2 -my-2"
                   >
                     <span>Enquire test</span>
                     <ArrowUpRight className="w-3.5 h-3.5 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5 transition-transform" />

@@ -29,7 +29,7 @@ export default function ChatbotWidget() {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 20, scale: 0.95 }}
               transition={{ duration: 0.2, ease: "easeOut" }}
-              className="fixed bottom-0 left-0 right-0 h-[85vh] max-h-[640px] sm:static sm:h-[600px] sm:w-[380px] sm:max-h-[620px] z-50 rounded-t-2xl sm:rounded-2xl shadow-2xl"
+              className="fixed bottom-0 left-0 right-0 h-[85dvh] max-h-[640px] w-full sm:static sm:h-[600px] sm:w-[380px] sm:max-h-[620px] z-50 rounded-t-2xl sm:rounded-2xl shadow-2xl"
             >
               <ChatWindow onClose={() => setIsOpen(false)} />
             </motion.div>

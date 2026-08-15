@@ -21,7 +21,7 @@ export default function Footer() {
             </div>
 
             <p className="text-white/70 text-xs sm:text-sm leading-relaxed max-w-sm">
-              Providing dependable diagnostic and laboratory services to patients in Toopran, Telangana, with a commitment to accuracy, care, and timely reports.
+              A demonstration website presenting clear diagnostic and laboratory testing information for patients in Toopran, Telangana.
             </p>
           </div>
 
@@ -64,7 +64,22 @@ export default function Footer() {
                 {centreConfig.location.city}, {centreConfig.location.district}, {centreConfig.location.state} - {centreConfig.location.pincode}
               </p>
               <p className="pt-1">
-                <span className="text-white/60">Phone:</span> {centreConfig.contact.phone}
+                <span className="text-white/60">Phone:</span>{" "}
+                <a
+                  href={`tel:${centreConfig.contact.phone.replace(/\s/g, "")}`}
+                  className="text-white/70 hover:text-white transition-colors break-all"
+                >
+                  {centreConfig.contact.phone}
+                </a>
+              </p>
+              <p>
+                <span className="text-white/60">Email:</span>{" "}
+                <a
+                  href={`mailto:${centreConfig.contact.email}`}
+                  className="text-white/70 hover:text-white transition-colors break-all"
+                >
+                  {centreConfig.contact.email}
+                </a>
               </p>
               <p>
                 <span className="text-white/60">Hours:</span> {centreConfig.hours.weekdays}
@@ -75,21 +90,21 @@ export default function Footer() {
         </div>
 
         {/* Disclaimers */}
-        <div className="mt-10 pt-6 border-t border-white/10 space-y-2 text-[11px] sm:text-xs text-white/65 leading-relaxed max-w-3xl">
+        <div className="mt-10 pt-6 border-t border-white/10 space-y-3 text-xs sm:text-[13px] text-white/70 leading-relaxed max-w-3xl">
           <p>
-            <span className="font-semibold text-white/85">Demo Disclaimer:</span>{" "}
+            <span className="font-semibold text-white/90">Demo Disclaimer:</span>{" "}
             {centreConfig.demoDisclaimer}
           </p>
           <p>
-            <span className="font-semibold text-white/85">Medical Disclaimer:</span>{" "}
+            <span className="font-semibold text-white/90">Medical Disclaimer:</span>{" "}
             {centreConfig.disclaimer}
           </p>
         </div>
 
         {/* Bottom copyright bar */}
-        <div className="mt-6 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white/60">
-          <p>© {currentYear} {centreConfig.name}. All rights reserved.</p>
-          <p>Demonstration Website & Integrated Diagnostic Assistant</p>
+        <div className="mt-6 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/60">
+          <p className="text-center sm:text-left">© {currentYear} {centreConfig.name}. All rights reserved.</p>
+          <p className="text-center sm:text-right">Demonstration Website & Integrated Diagnostic Assistant</p>
         </div>
       </div>
     </footer>

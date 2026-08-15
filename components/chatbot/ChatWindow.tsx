@@ -221,7 +221,8 @@ export default function ChatWindow({ onClose }: ChatWindowProps) {
             type="button"
             onClick={handleResetChat}
             title="Reset conversation"
-            className="p-1.5 rounded-lg text-primary-200 hover:text-white hover:bg-primary-800 transition-colors"
+            aria-label="Reset conversation"
+            className="p-2.5 rounded-lg text-primary-200 hover:text-white hover:bg-primary-800 transition-colors focus-visible:ring-2 focus-visible:ring-accent-400"
           >
             <RotateCcw className="w-4 h-4" />
           </button>
@@ -229,7 +230,8 @@ export default function ChatWindow({ onClose }: ChatWindowProps) {
             type="button"
             onClick={onClose}
             title="Close chat"
-            className="p-1.5 rounded-lg text-primary-200 hover:text-white hover:bg-primary-800 transition-colors"
+            aria-label="Close chat"
+            className="p-2.5 rounded-lg text-primary-200 hover:text-white hover:bg-primary-800 transition-colors focus-visible:ring-2 focus-visible:ring-accent-400"
           >
             <X className="w-4 h-4" />
           </button>
@@ -268,7 +270,7 @@ export default function ChatWindow({ onClose }: ChatWindowProps) {
       </div>
 
       {/* Input Form Bar */}
-      <div className="p-3 bg-white border-t border-border flex items-end gap-2">
+      <div className="p-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] bg-white border-t border-border flex items-end gap-2">
         <textarea
           ref={textareaRef}
           rows={1}
@@ -276,14 +278,15 @@ export default function ChatWindow({ onClose }: ChatWindowProps) {
           onChange={(e) => setInputValue(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="Ask a question or request a test..."
-          className="flex-1 resize-none max-h-24 min-h-[40px] px-3.5 py-2 text-xs sm:text-sm rounded-xl border border-border focus:border-primary-600 focus:ring-1 focus:ring-primary-600 outline-none text-text transition-colors placeholder:text-text-tertiary"
+          aria-label="Message the diagnostic assistant"
+          className="flex-1 resize-none max-h-24 min-h-[44px] px-3.5 py-2.5 text-xs sm:text-sm rounded-xl border border-border focus:border-primary-600 focus:ring-1 focus:ring-primary-600 outline-none text-text transition-colors placeholder:text-text-tertiary"
         />
 
         <button
           type="button"
           onClick={() => handleSendMessage()}
           disabled={!inputValue.trim() || isLoading}
-          className="h-[40px] w-[40px] rounded-xl bg-primary-600 hover:bg-primary-700 disabled:bg-primary-300 text-white flex items-center justify-center transition-colors flex-shrink-0"
+          className="h-[44px] w-[44px] rounded-xl bg-primary-600 hover:bg-primary-700 disabled:bg-primary-300 text-white flex items-center justify-center transition-colors flex-shrink-0"
           aria-label="Send message"
         >
           <Send className="w-4 h-4" />

@@ -76,7 +76,7 @@ export default function ChatMessage({ message, onEnquirySubmitted }: ChatMessage
   return (
     <div
       className={cn(
-        "flex gap-2.5 max-w-[88%]",
+        "flex gap-2.5 max-w-[88%] min-w-0",
         isUser ? "ml-auto flex-row-reverse" : "mr-auto"
       )}
     >
@@ -93,10 +93,10 @@ export default function ChatMessage({ message, onEnquirySubmitted }: ChatMessage
       </div>
 
       {/* Message Content Bubble */}
-      <div className="space-y-2">
+      <div className="space-y-2 min-w-0">
         <div
           className={cn(
-            "p-3 rounded-2xl text-xs sm:text-sm leading-relaxed",
+            "p-3 rounded-2xl text-xs sm:text-sm leading-relaxed break-words",
             isUser
               ? "bg-primary-600 text-white rounded-tr-sm"
               : "bg-surface-dim text-text rounded-tl-sm border border-border-light shadow-xs"
@@ -115,11 +115,11 @@ export default function ChatMessage({ message, onEnquirySubmitted }: ChatMessage
             )}
 
             {submissionState === "idle" && (
-              <div className="flex items-center gap-2">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
                 <button
                   type="button"
                   onClick={handleConfirmEnquiry}
-                  className="flex-1 inline-flex items-center justify-center gap-1 bg-primary-600 hover:bg-primary-700 text-white text-xs font-medium py-1.5 px-3 rounded-lg transition-colors"
+                  className="flex-1 inline-flex items-center justify-center gap-1 bg-primary-600 hover:bg-primary-700 text-white text-xs font-medium py-2.5 px-3 rounded-lg transition-colors"
                 >
                   <Check className="w-3.5 h-3.5" />
                   Submit Enquiry
@@ -127,7 +127,7 @@ export default function ChatMessage({ message, onEnquirySubmitted }: ChatMessage
                 <button
                   type="button"
                   onClick={handleCancelEnquiry}
-                  className="inline-flex items-center justify-center gap-1 bg-white hover:bg-surface-dim border border-border text-text-secondary text-xs font-medium py-1.5 px-3 rounded-lg transition-colors"
+                  className="inline-flex items-center justify-center gap-1 bg-white hover:bg-surface-dim border border-border text-text-secondary text-xs font-medium py-2.5 px-3 rounded-lg transition-colors"
                 >
                   <X className="w-3.5 h-3.5" />
                   Cancel

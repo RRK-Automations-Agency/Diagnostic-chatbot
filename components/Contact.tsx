@@ -1,5 +1,5 @@
 import React from "react";
-import { MapPin, Phone, Clock, ExternalLink } from "lucide-react";
+import { MapPin, Phone, Mail, Clock, ExternalLink } from "lucide-react";
 import { centreConfig } from "@/lib/config";
 
 export default function Contact() {
@@ -16,7 +16,7 @@ export default function Contact() {
           <span className="text-xs font-bold uppercase tracking-wider text-accent-600 block mb-1">
             Reach Out
           </span>
-          <h2 className="text-3xl sm:text-4xl font-bold text-primary-900 tracking-tight">
+          <h2 className="text-3xl sm:text-4xl font-bold text-primary-900 tracking-tight text-balance">
             Contact & Location
           </h2>
           <p className="mt-3 text-base text-text-secondary">
@@ -48,7 +48,7 @@ export default function Contact() {
                 href={mapUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary-600 hover:text-primary-700"
+                className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary-600 hover:text-primary-700 py-2.5 -my-1"
               >
                 <span>View on Google Maps</span>
                 <ExternalLink className="w-3.5 h-3.5" />
@@ -93,9 +93,22 @@ export default function Contact() {
               </h3>
               <p className="text-sm text-text-secondary leading-relaxed">
                 Direct phone inquiries: <br />
-                <span className="font-mono font-medium text-text mt-1 block">
+                <a
+                  href={`tel:${centreConfig.contact.phone.replace(/\s/g, "")}`}
+                  className="font-mono font-medium text-primary-700 hover:text-primary-800 mt-1 block break-all"
+                >
                   {centreConfig.contact.phone}
-                </span>
+                </a>
+              </p>
+              <p className="text-sm text-text-secondary leading-relaxed pt-2">
+                Email enquiries: <br />
+                <a
+                  href={`mailto:${centreConfig.contact.email}`}
+                  className="font-mono font-medium text-primary-700 hover:text-primary-800 mt-1 block break-all"
+                >
+                  <Mail className="w-3.5 h-3.5 inline -mt-0.5 mr-1" />
+                  {centreConfig.contact.email}
+                </a>
               </p>
               <p className="text-xs text-text-tertiary mt-2">
                 Support for appointment verification, sample collection queries, and report status.

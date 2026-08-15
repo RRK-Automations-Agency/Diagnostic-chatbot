@@ -44,16 +44,16 @@ export default function Navbar() {
           {/* Brand Wordmark */}
           <a
             href="#home"
-            className="flex items-center gap-2.5 group focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 rounded-lg p-1"
+            className="flex items-center gap-2.5 group min-w-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 rounded-lg p-1"
           >
-            <div className="w-9 h-9 rounded-lg bg-primary-600 flex items-center justify-center text-white font-bold text-lg shadow-sm group-hover:bg-primary-700 transition-colors">
+            <div className="w-9 h-9 rounded-lg bg-primary-600 flex items-center justify-center text-white font-bold text-lg shadow-sm group-hover:bg-primary-700 transition-colors flex-shrink-0">
               AJ
             </div>
-            <div className="flex flex-col">
-              <span className="font-bold text-primary-900 text-lg leading-tight tracking-tight">
+            <div className="flex flex-col min-w-0">
+              <span className="font-bold text-primary-900 text-sm sm:text-base lg:text-lg leading-tight tracking-tight truncate">
                 {centreConfig.name}
               </span>
-              <span className="text-xs text-text-tertiary font-medium">
+              <span className="text-[11px] sm:text-xs text-text-tertiary font-medium truncate">
                 {centreConfig.location.city}, {centreConfig.location.state}
               </span>
             </div>
@@ -84,17 +84,17 @@ export default function Navbar() {
           </div>
 
           {/* Mobile Menu Toggle Button */}
-          <div className="flex md:hidden items-center gap-2">
+          <div className="flex md:hidden items-center gap-1.5">
             <a
               href="#appointment"
-              className="bg-primary-600 hover:bg-primary-700 text-white px-3 py-1.5 rounded-lg text-xs font-medium"
+              className="bg-primary-600 hover:bg-primary-700 text-white px-3 py-2 rounded-lg text-xs font-medium whitespace-nowrap"
             >
               Book Test
             </a>
             <button
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 rounded-lg text-text-secondary hover:text-text hover:bg-surface-dim focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-600"
+              className="p-2.5 rounded-lg text-text-secondary hover:text-text hover:bg-surface-dim focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-600"
               aria-expanded={mobileMenuOpen}
               aria-label="Toggle navigation menu"
             >
@@ -111,7 +111,7 @@ export default function Navbar() {
                 key={link.name}
                 href={link.href}
                 onClick={() => setMobileMenuOpen(false)}
-                className="block px-3 py-2.5 rounded-lg text-sm font-medium text-text-secondary hover:text-primary-600 hover:bg-surface-dim transition-colors"
+                className="block px-3 py-3 rounded-lg text-sm font-medium text-text-secondary hover:text-primary-600 hover:bg-surface-dim transition-colors"
               >
                 {link.name}
               </a>
@@ -120,7 +120,7 @@ export default function Navbar() {
               <a
                 href="#contact"
                 onClick={() => setMobileMenuOpen(false)}
-                className="w-full flex items-center justify-center gap-2 border border-border-light text-text-secondary hover:bg-surface-dim py-2.5 rounded-lg text-sm font-medium transition-colors"
+                className="w-full flex items-center justify-center gap-2 border border-border-light text-text-secondary hover:bg-surface-dim py-3 rounded-lg text-sm font-medium transition-colors"
               >
                 <PhoneCall className="w-4 h-4 text-primary-600" />
                 Contact Info

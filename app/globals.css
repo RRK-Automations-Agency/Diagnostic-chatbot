@@ -58,6 +58,16 @@ html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* Keep anchor targets clear of the fixed navbar on all viewports */
+  scroll-padding-top: 5.5rem;
+}
+
+html,
+body {
+  /* Safety net: never allow horizontal page overflow from decorative
+     glows, animations, or off-screen content on any viewport. `clip`
+     (rather than `hidden`) preserves sticky/fixed positioning. */
+  overflow-x: clip;
 }
 
 body {
@@ -109,6 +119,26 @@ body {
 
 .animate-launcher-pulse {
   animation: launcher-pulse 2.8s ease-in-out infinite;
+}
+
+/* ── Reduced motion ────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .animate-launcher-pulse,
+  .animate-ping {
+    animation: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
 }
 
 /* ── Section spacing utility ──────────────────────────── */

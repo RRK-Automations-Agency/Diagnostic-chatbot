@@ -13,7 +13,7 @@ export default function PopularTests() {
             <span className="text-xs font-bold uppercase tracking-wider text-accent-600 block mb-1">
               Test Catalog
             </span>
-            <h2 className="text-3xl sm:text-4xl font-bold text-primary-900 tracking-tight">
+            <h2 className="text-3xl sm:text-4xl font-bold text-primary-900 tracking-tight text-balance">
               Common Diagnostic Tests
             </h2>
             <p className="mt-2 text-sm sm:text-base text-text-secondary max-w-2xl">
@@ -55,7 +55,7 @@ export default function PopularTests() {
                 <span className="text-text-tertiary">Standard Protocol</span>
                 <a
                   href="#appointment"
-                  className="font-medium text-primary-600 hover:text-primary-700"
+                  className="font-medium text-primary-600 hover:text-primary-700 py-2 -my-2"
                 >
                   Enquire
                 </a>

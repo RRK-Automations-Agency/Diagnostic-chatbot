@@ -28,19 +28,19 @@ export default function Hero() {
               Diagnostic Care in {centreConfig.location.city}, {centreConfig.location.state}
             </div>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-primary-900 tracking-tight leading-[1.15]">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-primary-900 tracking-tight leading-[1.15] text-balance">
               {centreConfig.tagline}
             </h1>
 
             <p className="text-base sm:text-lg text-text-secondary leading-relaxed max-w-2xl">
-              Dedicated to delivering dependable diagnostic testing with precise reports, compassionate staff, and a patient-first experience for families in Toopran and surrounding areas.
+              Clear information about routine diagnostic testing and laboratory services for families in Toopran and surrounding areas.
             </p>
 
             {/* Action Buttons */}
-            <div className="flex flex-wrap items-center gap-3.5 pt-2">
+            <div className="flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center gap-3.5 pt-2">
               <a
                 href="#appointment"
-                className="inline-flex items-center gap-2 bg-primary-600 hover:bg-primary-700 text-white font-medium px-6 py-3.5 rounded-xl shadow-sm hover:shadow transition-all text-sm sm:text-base focus-visible:ring-2 focus-visible:ring-primary-600"
+                className="inline-flex items-center justify-center gap-2 bg-primary-600 hover:bg-primary-700 text-white font-medium px-6 py-3.5 rounded-xl shadow-sm hover:shadow transition-all text-sm sm:text-base focus-visible:ring-2 focus-visible:ring-primary-600"
               >
                 <span>Book a Test</span>
                 <ArrowRight className="w-4 h-4" />
@@ -48,7 +48,7 @@ export default function Hero() {
 
               <a
                 href="#contact"
-                className="inline-flex items-center gap-2 bg-white hover:bg-surface-dim text-text-secondary font-medium px-6 py-3.5 rounded-xl border border-border transition-colors text-sm sm:text-base focus-visible:ring-2 focus-visible:ring-primary-600"
+                className="inline-flex items-center justify-center gap-2 bg-white hover:bg-surface-dim text-text-secondary font-medium px-6 py-3.5 rounded-xl border border-border transition-colors text-sm sm:text-base focus-visible:ring-2 focus-visible:ring-primary-600"
               >
                 <PhoneCall className="w-4 h-4 text-primary-600" />
                 <span>Contact Centre</span>
@@ -56,24 +56,24 @@ export default function Hero() {
             </div>
 
             {/* Trust Indicators */}
-            <div className="pt-6 border-t border-border-light grid grid-cols-3 gap-4 max-w-lg">
+            <div className="pt-6 border-t border-border-light grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 max-w-lg">
               <div className="flex items-center gap-2.5">
                 <div className="w-8 h-8 rounded-lg bg-primary-50 flex items-center justify-center text-primary-600 flex-shrink-0">
                   <ShieldCheck className="w-4 h-4" />
                 </div>
-                <span className="text-xs sm:text-sm font-medium text-text-secondary">Reliable Testing</span>
+                <span className="text-xs sm:text-sm font-medium text-text-secondary">Clear Test Information</span>
               </div>
               <div className="flex items-center gap-2.5">
                 <div className="w-8 h-8 rounded-lg bg-primary-50 flex items-center justify-center text-primary-600 flex-shrink-0">
                   <Clock className="w-4 h-4" />
                 </div>
-                <span className="text-xs sm:text-sm font-medium text-text-secondary">Timely Reports</span>
+                <span className="text-xs sm:text-sm font-medium text-text-secondary">Report Guidance</span>
               </div>
               <div className="flex items-center gap-2.5">
                 <div className="w-8 h-8 rounded-lg bg-primary-50 flex items-center justify-center text-primary-600 flex-shrink-0">
                   <HeartHandshake className="w-4 h-4" />
                 </div>
-                <span className="text-xs sm:text-sm font-medium text-text-secondary">Patient Friendly</span>
+                <span className="text-xs sm:text-sm font-medium text-text-secondary">Patient Support</span>
               </div>
             </div>
           </motion.div>
@@ -107,7 +107,7 @@ export default function Hero() {
                   <CheckCircle2 className="w-5 h-5 text-accent-600 mt-0.5 flex-shrink-0" />
                   <div>
                     <h4 className="text-sm font-semibold text-text">Home Sample Collection</h4>
-                    <p className="text-xs text-text-secondary mt-0.5">Safe, professional home collection available for eligible tests.</p>
+                    <p className="text-xs text-text-secondary mt-0.5">Home sample collection information and enquiry support for eligible tests.</p>
                   </div>
                 </div>
 
@@ -120,9 +120,9 @@ export default function Hero() {
                 </div>
               </div>
 
-              <div className="mt-6 pt-4 border-t border-border-light flex items-center justify-between text-xs text-text-tertiary">
+              <div className="mt-6 pt-4 border-t border-border-light flex flex-wrap items-center justify-between gap-2 text-xs text-text-tertiary">
                 <span>Location: {centreConfig.location.city}, {centreConfig.location.state}</span>
-                <span className="font-medium text-primary-700">Trusted Local Care</span>
+                <span className="font-medium text-primary-700">Local Diagnostic Support</span>
               </div>
             </div>
           </motion.div>
